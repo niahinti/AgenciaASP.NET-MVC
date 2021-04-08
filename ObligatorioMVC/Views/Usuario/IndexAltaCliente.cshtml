@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Registrar Cliente";
+}
+
+<form action="~/Usuario/AltaCliente" method="post">
+    <h2>Registrar Cliente</h2>
+    <br />
+    <label>Cedula</label><br />
+    <input type="number" id="username" name="username" /><br />
+    <label>Nombre</label><br />
+    <input type="text" id="nombre" name="nombre" /><br />
+    <label>Apellido</label><br />
+    <input type="text" id="apellido" name="apellido" /><br />
+    <label>Contraseña</label><br />
+    <input type="password" id="contrasenia" name="contrasenia" /><br /><br />
+    <input type="submit" value="Crear Usuario" onclick="return ValidarDatos()" />
+    @ViewBag.Mensaje
+    @ViewBag.MensajeAlta
+</form>
+
+<script>
+    function ValidarDatos() {
+        if ($("#username").val() == "" || $("#nombre").val() == "" || $("#apellido").val() == "" || $("#contrasenia").val() == "") {
+            alert("Todos los datos son mandatorios");
+            return false;
+        }
+    }
+</script>

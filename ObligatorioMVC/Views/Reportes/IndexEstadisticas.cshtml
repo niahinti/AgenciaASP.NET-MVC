@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Estadisticas";
+}
+
+<h2>Estadisticas</h2>
+<br />
+<p><u>Destino/s visitados en mas Excursiones</u></p>
+
+@if (ViewBag.DestinosMax != null && ViewBag.DestinosMax.Count > 0)
+{
+    foreach (ObligatorioP2_Dominio.Destino destino in ViewBag.DestinosMax)
+    {
+        <p>@destino.Ciudad.ToUpper() , @destino.Pais.ToUpper()</p>
+    }
+}
+else
+{
+    <p>No se encontraron destinos.</p>
+}
+
+<hr />
+
+<form action="~/Reportes/ReporteExcursionesPorDestino">
+    <p>Buscar Excursiones por Destino</p>
+    <label>Ciudad</label><br />
+    <input type="text" name="ciudadDestino" />
+    <br /><br />
+    <label>Pais</label><br />
+    <input type="text" name="paisDestino" />
+    <br /><br />
+    <input type="submit" value="Buscar" />
+</form>
+
+<br />
+<br />
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table-condensed">
+        <tr>
+            <th>
+                Fecha
+            </th>
+            <th>
+                Descripcion
+            </th>
+            <th>
+                Costo por persona
+            </th>
+        </tr>
+    </table>
+    foreach (ObligatorioP2_Dominio.Excursion excursion in
+        Model)
+    {
+        <table class="table-condensed">
+            <tr>
+                <td>
+                    @excursion.Fecha.ToShortDateString()
+                </td>
+                <td>
+                    @excursion.Descripcion
+                </td>
+                <td>
+                    $ @excursion.calcCostoTotalExcursion() USD
+                </td>
+            </tr>
+        </table>
+    }
+}
+else if (Model != null && Model.Count == 0)
+{
+    <p>No se encontraron excursiones que visiten ese destino.</p>
+}

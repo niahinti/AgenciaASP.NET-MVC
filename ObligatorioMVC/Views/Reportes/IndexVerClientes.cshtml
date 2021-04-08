@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Ver Clientes";
+}
+
+
+<h2>Ver Clientes</h2>
+@if (ViewBag.ListaClientes.Count > 0)
+{
+    foreach (ObligatorioP2_Dominio.Cliente cliente in
+        ViewBag.ListaClientes)
+    {
+        <hr />
+        <p>
+            Nombre:
+            <b>
+                @cliente.Nombre @cliente.Apellido
+            </b>
+        </p>
+        <p>Cedula: @cliente.Username</p>
+    }
+}
+else
+{   // si no hay clientes en la lista
+    <p>Aun no hay clientes registrados.</p>
+}
+
+
+

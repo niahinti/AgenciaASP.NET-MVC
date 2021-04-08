@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Mis Compras";
+}
+
+<h2>Mis Compras</h2>
+
+
+
+@if (Model != null)
+{
+    <p>@Model</p>
+}
+
+
+@if (ViewBag.ListaMisCompras != null && ViewBag.ListaMisCompras.Count > 0)
+{
+    foreach (ObligatorioP2_Dominio.Compra compra in
+        ViewBag.ListaMisCompras)
+    {
+        <hr />
+        <p><b>@compra.Excursion.Descripcion</b></p>
+        <p>Fecha de partida: @compra.Excursion.Fecha.ToShortDateString()</p>
+        <p>Pasajeros Adultos: @compra.PaxMayores</p>
+        if (compra.PaxMenores > 0)
+        {
+            <p>Pasajeros Menores: @compra.PaxMenores</p>
+        }
+
+        <p>Precio por persona: $ @compra.calcMontoPerPax() USD</p>
+
+        if (DateTime.Now < (compra.Excursion.Fecha).AddDays(-10))
+        {
+            <p><a href="~/Excursion/cancelarCompra?idCompra=@compra.Id">Cancelar</a></p>
+        }
+        else
+        {
+            TimeSpan countdown;
+            countdown = compra.Excursion.Fecha.Subtract(DateTime.Today);
+            int dias = countdown.Days;
+            <p>Faltan solo @dias dias para la excursion!</p>
+        }
+    }
+}
+else if (ViewBag.ListaMisCompras != null && ViewBag.ListaMisCompras.Count == 0)
+{
+    <br />
+    <p>No has hecho ninguna compra aun.</p>
+    <br />
+    <p><a href="~/Excursion/IndexCatalogo">Ir a Catalogo de Excursiones</a></p>
+}
+else
+{
+    <p><a href="~/Excursion/IndexCatalogo">Ir a Catalogo de Excursiones</a></p>
+}
+
+<br />
+@ViewBag.Mensaje

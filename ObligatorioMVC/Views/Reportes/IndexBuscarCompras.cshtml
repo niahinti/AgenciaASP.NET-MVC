@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Buscar Compras";
+}
+
+    <h2>Buscar Compras</h2>
+
+
+    <form action="~/Reportes/BuscarCompras">
+        <br />
+        <label>Buscar compras desde:</label>
+        <input type="date" name="fechaDesde" value="@ViewBag.FechaDesde" />
+        <label>hasta:</label>
+        <input type="date" name="fechaHasta" />
+        <br /><br />
+        <input type="submit" value="Buscar" />
+        <br /><br />
+    </form>
+
+
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (ObligatorioP2_Dominio.Compra compra in
+            Model)
+        {
+            <br />
+
+            <table class="table">
+                <tr>
+                    <th>
+                        Compra id: @compra.Id
+                    </th>
+                    <td>
+                        Cliente: @compra.Cliente.Nombre @compra.Cliente.Apellido
+                    </td>
+                    <td>
+                        Excursion de Tipo @compra.Excursion.tipoExcursion() a @compra.Excursion.Descripcion
+                    </td>
+                    <td>
+                        Fecha de Compra: @compra.Fecha
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Id Excursion @compra.Excursion.Id
+                    </td>
+                    <td>
+                        Pasajeros: @compra.cantPax()
+                    </td>
+                    <td>
+                        Destinos: @compra.Excursion.mostrarDestinos()
+                    </td>
+                    <td>
+                        Fecha de Viaje: @compra.Excursion.Fecha.ToShortDateString()
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Monto total: $ @compra.MontoTotal USD
+                    </td>
+                    <td>Monto por pasajero: $ @compra.calcMontoPerPax() USD</td>
+                    <td>
+                        @if (compra.Excursion is ObligatorioP2_Dominio.Nacional)
+                        {
+                            <p>Descuento realizado: $ @compra.calcMontoEspecifico() USD</p>
+                        }
+                        else if (compra.Excursion is ObligatorioP2_Dominio.Internacional)
+                        {
+                            <p>Comision generada: $ @compra.calcMontoEspecifico() USD</p>
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        }
+        <table class="table">
+            <tr>
+                <th>
+                    Suma Total de Compras entre fechas elegidas: $ @ViewBag.TotalCompras USD
+                </th>
+            </tr>
+        </table>
+    }
+    else if (Model != null && Model.Count == 0)
+    {
+        <p>No hubo compras entre estas fechas.</p>
+    }
+

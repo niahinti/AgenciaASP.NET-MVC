@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Catalogo de Excursiones";
+}
+
+<h2>Catalogo de Excursiones</h2>
+
+@if (ObligatorioP2_Dominio.Agencia.getInstancia.ListaExcursiones.Count > 0)
+{
+    foreach (ObligatorioP2_Dominio.Excursion excursion in
+        ObligatorioP2_Dominio.Agencia.getInstancia.ListaExcursiones)
+    {
+        <hr />
+        <p><b>@excursion.Descripcion</b></p>
+
+        <p>Fecha de partida: @excursion.Fecha.ToShortDateString()</p>
+        <p>Dias de Traslado: @excursion.DiasTraslado</p>
+        <p>Destinos: @excursion.mostrarDestinos()</p>
+
+        if (Session["usuario"] != null && Session["rol"].ToString() == "Cliente")
+        {
+            if (@excursion.Stock > 0)
+            {
+                <p>
+                    <a href="~/Excursion/ComprarExcursion?idExcursion=@excursion.Id">Seleccionar</a>
+                </p>
+            }
+            else
+            {
+                <p>
+                    Fuera de Stock
+                </p>
+            }
+
+
+        }
+    }
+}
+else
+{   // si no hay excursiones en la lista
+    <p>Debido a la pandemia de Covid19, las excursiones han sido temporalmente canceladas.</p>
+}

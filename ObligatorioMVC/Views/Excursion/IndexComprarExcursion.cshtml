@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Comprar Excursion";
+}
+
+<h2>Comprar Excursion</h2>
+
+<form action="~/Excursion/AltaCompra" method="post">
+    <br />
+    <p><b>@ViewBag.miExcursion.Descripcion</b></p>
+    <p>Fecha de partida: @ViewBag.miExcursion.Fecha.ToShortDateString()</p>
+    <p>Dias de Traslado: @ViewBag.miExcursion.DiasTraslado</p>
+    <p>@ViewBag.miExcursion.datosEspecificos()</p>
+    <p>Destinos: @ViewBag.miExcursion.mostrarDestinos()</p>
+    <br />
+    <p>Precio por persona: $ @ViewBag.miExcursion.calcCostoTotalExcursion() USD</p>
+    <p>Precio por persona en pesos: $ @ViewBag.PrecioUY UYU</p>
+    <br />
+
+    <input type="hidden" value="@ViewBag.miExcursion.Id" name="idExcursion" />
+
+    <br />
+    @if (ViewBag.Confirmacion != true)
+    {
+        <label>Pasajeros mayores de 18 años</label><br />
+        <input type="number" id="paxMayor" name="paxMayor" /><br />
+        <label>Pasajeros menores</label><br />
+        <input type="number" id="paxMenor" name="paxMenor" /><br /><br />
+
+        <input type="submit" value="Confirmar" onclick="return ValidarDatos()" />
+        <p id="pValidar"></p>
+        <p id="pValidar2"></p>
+    }
+    @ViewBag.Mensaje
+</form>
+
+<script>
+    function ValidarDatos() {
+        if ($("#paxMayor").val() == "" || ("#paxMayor").val() <= 0  ) {
+            $("#pValidar").html("Debe viajar al menos un mayor");
+            return false;
+        }
+        if ($("#paxMenor").val() < 0) { // por alguna razon no entra en este if, por eso le puse otro p, pero igual, solo si borro el primer if entra, capaz es por el return false
+            $("#pValidar2").html("Cantidad de pasajeros invalida.");
+            return false;
+        }
+    }
+</script>
